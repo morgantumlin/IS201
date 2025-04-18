@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title> Book Trivia Game</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #a770ef, #cf8bf3, #fdb99b);
+      margin: 0;
+      padding: 40px;
+      color: #fff;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .question {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    .options button {
+      display: block;
+      margin: 10px auto;
+      padding: 10px 20px;
+      background-color: #fff;
+      color: #333;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .options button:hover {
+      background-color: #f1c40f;
+    }
+
+    .feedback {
+      font-size: 1.2rem;
+      margin-top: 15px;
+    }
+
+    .score {
+      margin-top: 25px;
+      font-weight: bold;
+    }
+
+    .nav-link {
+      display: block;
+      margin-top: 40px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .nav-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Book Trivia Game</h1>
+    <div id="game">
+      <div id="question" class="question"></div>
+      <div id="options" class="options"></div>
+      <div id="feedback" class="feedback"></div>
+      <div id="score" class="score"></div>
+    </div>
+    <a href="index.html" class="nav-link">← Back to Home</a>
+  </div>
+
+  <script>
+    const trivia = [
+      {
+        question: "Who wrote *Pride and Prejudice*?",
+        options: ["Jane Austen", "Charlotte Brontë", "Mary Shelley", "Emily Dickinson"],
+        answer: "Jane Austen"
+      },
+      {
+        question: "In *Harry Potter*, what is the name of Harry’s pet owl?",
+        options: ["Hedwig", "Crookshanks", "Errol", "Fawkes"],
+        answer: "Hedwig"
+      },
+      {
+        question: "What is the fictional language spoken by the elves in *The Lord of the Rings*?",
+        options: ["Elvish", "Sindarin", "Quenya", "Dothraki"],
+        answer: "Sindarin"
+      },
+      {
+        question: "*The Hunger Games* series was written by?",
+        options: ["Veronica Roth", "Suzanne Collins", "J.K. Rowling", "Stephenie Meyer"],
+        answer: "Suzanne Collins"
+      },
+      {
+        question: "Two displaced migrant ranch workers are the dual protagonists of what 1937 novella with a title that starts with a preposition??",
+        options: ["The Lord of Flies", "Little Women", "Of Mice and Men", "Of Mirth and Money"],
+        answer: "Of Mice and Men"
+      }
+    ];
+
+    let current = 0;
+    let score = 0;
+
+    function showQuestion() {
+      const q = trivia[current];
+      document.getElementById("question").textContent = q.question;
+      const optionsContainer = document.getElementById("options");
+      optionsContainer.innerHTML = "";
+      q.options.forEach(option => {
+        const button = document.createElement("button");
+        button.textContent = option;
+        button.onclick = () => checkAnswer(option);
+        optionsContainer.appendChild(button);
+      });
+      document.getElementById("feedback").textContent = "";
+    }
+
+    function checkAnswer(selected) {
+      const correct = trivia[current].answer;
+      const feedback = document.getElementById("feedback");
+      if (selected === correct) {
+        feedback.textContent = "✅ Correct!";
+        score++;
+      } else {
+        feedback.textContent = `❌ Oops! The correct answer was: ${correct}`;
+      }
+
+      document.getElementById("score").textContent = `Score: ${score} / ${trivia.length}`;
+
+      current++;
+      if (current < trivia.length) {
+        setTimeout(showQuestion, 1500);
+      } else {
+        setTimeout(() => {
+          document.getElementById("game").innerHTML = `
+            <h2>🎉 You completed the trivia!</h2>
+            <p>Your final score: ${score} / ${trivia.length}</p>
+          `;
+        }, 2000);
+      }
+    }
+
+    showQuestion();
+  </script>
+</body>
+</html>
